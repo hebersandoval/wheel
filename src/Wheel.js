@@ -1,51 +1,54 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState, useCallback } from 'react';
+
+const COLORS = ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40']; // Stable color palette.
 
 const Wheel = ({ names, onSpinEnd, spinning, setSpinning }) => {
     const canvasRef = useRef(null);
     const [rotation, setRotation] = useState(0);
-    const colors = ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40']; // Minimal color palette.
-
-    // Draw wheel on canvas.
-    const drawWheel = (ctx, rot) => {
-        const num = names.length;
-        if (num === 0) return;
-        const arc = (Math.PI * 2) / num;
-        ctx.clearRect(0, 0, 600, 600);
-        ctx.save();
-        ctx.translate(300, 300);
-        ctx.rotate((rot * Math.PI) / 180);
-        names.forEach((name, i) => {
-            ctx.beginPath();
-            ctx.moveTo(0, 0);
-            ctx.arc(0, 0, 300, i * arc, (i + 1) * arc);
-            ctx.fillStyle = colors[i % colors.length];
-            ctx.fill();
+    // Draw wheel on canvas. Memoized to keep stable reference for useEffect deps.
+    const drawWheel = useCallback(
+        (ctx, rot) => {
+            const num = names.length;
+            if (num === 0) return;
+            const arc = (Math.PI * 2) / num;
+            ctx.clearRect(0, 0, 600, 600);
             ctx.save();
-            ctx.rotate(i * arc + arc / 2);
-            ctx.translate(150, 0);
-            ctx.rotate(Math.PI / 2);
-            ctx.fillStyle = '#FFF';
-            ctx.font = 'bold 18px Arial'; // Slightly larger font for bigger wheel.
-            ctx.fillText(name.substring(0, 12), -ctx.measureText(name.substring(0, 12)).width / 2, 0); // Truncate long names.
+            ctx.translate(300, 300);
+            ctx.rotate((rot * Math.PI) / 180);
+            names.forEach((name, i) => {
+                ctx.beginPath();
+                ctx.moveTo(0, 0);
+                ctx.arc(0, 0, 300, i * arc, (i + 1) * arc);
+                ctx.fillStyle = COLORS[i % COLORS.length];
+                ctx.fill();
+                ctx.save();
+                ctx.rotate(i * arc + arc / 2);
+                ctx.translate(150, 0);
+                ctx.rotate(Math.PI / 2);
+                ctx.fillStyle = '#FFF';
+                ctx.font = 'bold 18px Arial'; // Slightly larger font for bigger wheel.
+                ctx.fillText(name.substring(0, 12), -ctx.measureText(name.substring(0, 12)).width / 2, 0); // Truncate long names.
+                ctx.restore();
+            });
             ctx.restore();
-        });
-        ctx.restore();
 
-        // Draw static arrow at top (pointing down to winner).
-        ctx.beginPath();
-        ctx.moveTo(300, 20); // Top center.
-        ctx.lineTo(280, 60);
-        ctx.lineTo(320, 60);
-        ctx.closePath();
-        ctx.fillStyle = '#FF0000'; // Red arrow.
-        ctx.fill();
-    };
+            // Draw static arrow at top (pointing down to winner).
+            ctx.beginPath();
+            ctx.moveTo(300, 20); // Top center.
+            ctx.lineTo(280, 60);
+            ctx.lineTo(320, 60);
+            ctx.closePath();
+            ctx.fillStyle = '#FF0000'; // Red arrow.
+            ctx.fill();
+        },
+        [names],
+    );
 
     // Spinning animation with easing.
     useEffect(() => {
         const ctx = canvasRef.current?.getContext('2d');
         if (ctx) drawWheel(ctx, rotation);
-    }, [names, rotation]);
+    }, [drawWheel, rotation]);
 
     const startSpin = () => {
         if (names.length === 0 || spinning) return;
@@ -68,7 +71,7 @@ const Wheel = ({ names, onSpinEnd, spinning, setSpinning }) => {
                 // Arrow points downwards on screen — that's 270° from positive X-axis
                 const ARROW_ANGLE = 270;
                 // Compute winner index using positive modulo arithmetic
-                const relativeAngle = ((ARROW_ANGLE - finalRot) % 360 + 360) % 360;
+                const relativeAngle = (((ARROW_ANGLE - finalRot) % 360) + 360) % 360;
                 const winnerIndex = Math.floor(relativeAngle / sliceAngle) % names.length;
 
                 onSpinEnd(names[winnerIndex]);
@@ -103,7 +106,7 @@ const Wheel = ({ names, onSpinEnd, spinning, setSpinning }) => {
                 x: Math.random() * window.innerWidth,
                 y: (Math.random() * window.innerHeight) / 2, // Start from top half.
                 size: Math.random() * 10 + 5,
-                color: colors[Math.floor(Math.random() * colors.length)],
+                color: COLORS[Math.floor(Math.random() * COLORS.length)],
                 vx: (Math.random() - 0.5) * 20,
                 vy: (Math.random() - 0.5) * 20 - 10, // Upward bias.
                 rotation: Math.random() * Math.PI * 2,
