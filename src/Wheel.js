@@ -144,13 +144,8 @@ const Wheel = ({ names, onSpinEnd, spinning, setSpinning }) => {
     };
 
     return (
-        <div style={{ textAlign: 'center' }}>
-            <canvas
-                ref={canvasRef}
-                width={600}
-                height={600}
-                style={{ border: '1px solid #ccc', borderRadius: '50%' }}
-            />
+        <div className="card wheel">
+            <canvas ref={canvasRef} width={600} height={600} className="wheel-canvas" />
             <button
                 onClick={startSpin}
                 disabled={spinning || names.length === 0}

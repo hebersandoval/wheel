@@ -42,7 +42,7 @@ const App = () => {
 
             {/* Right Column: Names Input, Winner, Timer */}
             <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                <h1 style={{ marginBottom: '20px' }}>Wheel of Names</h1>
+                <h1 style={{ marginBottom: '20px' }}>Spin the Recora Wheel</h1>
 
                 {/* Name Input */}
                 <textarea
@@ -60,7 +60,16 @@ const App = () => {
                 />
 
                 {/* Winner Display - Bigger font */}
-                {winner && <h2 style={{ marginBottom: '20px', color: 'green', fontSize: '60px' }}>Winner: {winner}</h2>}
+                {winner && (
+                    <div>
+                        <h2 style={{ marginBottom: '20px', color: 'green', fontSize: '36px' }}>Your turn to score:</h2>
+
+                        <h2 style={{ textAlign: 'center', marginBottom: '20px', color: 'green', fontSize: '60px' }}>
+                            {' '}
+                            {winner}
+                        </h2>
+                    </div>
+                )}
 
                 {/* Timer */}
                 <Timer />

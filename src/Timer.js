@@ -28,34 +28,27 @@ const Timer = () => {
     };
 
     return (
-        <div style={{ marginTop: '40px', textAlign: 'center', width: '300px' }}>
-            <h2>Countdown Timer</h2>
-            <div style={{ fontSize: '72px', marginBottom: '10px' }}>{formatTime()}</div>
+        <div className="card timer" style={{ marginTop: '24px' }}>
+            <h2 style={{ margin: '6px 0 8px', color: 'var(--muted)' }}>Countdown Timer</h2>
+            <div className="timer-display">{formatTime()}</div>
 
-            {/* Row 1: +1 and +5 min */}
-            <div style={{ display: 'flex', justifyContent: 'space-around', marginBottom: '10px' }}>
-                <button onClick={() => addMinutes(1)} style={{ padding: '5px 10px', flex: 1, marginRight: '5px' }}>
+            {/* Row 1: +1 min only */}
+            <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '12px' }}>
+                <button onClick={() => addMinutes(1)} style={{ width: '100%', maxWidth: '160px' }}>
                     +1 min
-                </button>
-                <button onClick={() => addMinutes(5)} style={{ padding: '5px 10px', flex: 1, marginLeft: '5px' }}>
-                    +5 min
                 </button>
             </div>
 
-            {/* Row 2: +10 min and custom */}
-            <div
-                style={{ display: 'flex', justifyContent: 'space-around', alignItems: 'center', marginBottom: '10px' }}>
-                <button onClick={() => addMinutes(10)} style={{ padding: '5px 10px', flex: 1, marginRight: '5px' }}>
-                    +10 min
-                </button>
+            {/* Row 2: Custom minute input and Add */}
+            <div className="controls" style={{ marginBottom: '12px' }}>
                 <input
                     type="number"
                     value={customMin}
                     onChange={(e) => setCustomMin(e.target.value)}
                     placeholder="Custom min"
-                    style={{ padding: '5px', flex: 1, marginRight: '5px' }}
+                    style={{ flex: 1 }}
                 />
-                <button onClick={handleCustom} style={{ padding: '5px 10px' }}>
+                <button onClick={handleCustom} style={{ padding: '8px 12px' }}>
                     Add
                 </button>
             </div>
@@ -65,11 +58,8 @@ const Timer = () => {
                 onClick={() => setRunning(!running)}
                 style={{
                     marginBottom: '10px',
-                    padding: '10px 20px',
-                    background: running ? '#f44336' : '#4CAF50',
-                    color: '#fff',
-                    border: 'none',
                     width: '100%',
+                    background: running ? '#ef4444' : undefined,
                 }}>
                 {running ? 'Pause' : 'Start'}
             </button>
@@ -78,7 +68,7 @@ const Timer = () => {
                     setTime(0);
                     setRunning(false);
                 }}
-                style={{ padding: '10px 20px', background: '#ccc', color: '#000', border: 'none', width: '100%' }}>
+                style={{ padding: '10px 20px', background: '#e6e9ef', color: '#111827', width: '100%' }}>
                 Reset
             </button>
         </div>
