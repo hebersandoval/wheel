@@ -53,24 +53,22 @@ const Timer = () => {
                 </button>
             </div>
 
-            {/* Start/Pause and Reset */}
-            <button
-                onClick={() => setRunning(!running)}
-                style={{
-                    marginBottom: '10px',
-                    width: '100%',
-                    background: running ? '#ef4444' : undefined,
-                }}>
-                {running ? 'Pause' : 'Start'}
-            </button>
-            <button
-                onClick={() => {
-                    setTime(0);
-                    setRunning(false);
-                }}
-                style={{ padding: '10px 20px', background: '#e6e9ef', color: '#111827', width: '100%' }}>
-                Reset
-            </button>
+            {/* Start/Pause and Reset (inline) */}
+            <div style={{ display: 'flex', gap: '10px', marginTop: '8px' }}>
+                <button
+                    onClick={() => setRunning(!running)}
+                    style={{ flex: 1, background: running ? '#ef4444' : undefined }}>
+                    {running ? 'Pause' : 'Start'}
+                </button>
+                <button
+                    onClick={() => {
+                        setTime(0);
+                        setRunning(false);
+                    }}
+                    style={{ flex: 1, background: '#e6e9ef', color: '#111827' }}>
+                    Reset
+                </button>
+            </div>
         </div>
     );
 };

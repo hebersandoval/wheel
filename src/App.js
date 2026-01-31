@@ -9,6 +9,7 @@ const App = () => {
     const [names, setNames] = useState([]);
     const [namesInput, setNamesInput] = useState('');
     const [winner, setWinner] = useState(null);
+    const [winnerKey, setWinnerKey] = useState(0);
     const [spinning, setSpinning] = useState(false);
 
     // Parse textarea input (one name per line).
@@ -21,6 +22,7 @@ const App = () => {
     // Callback from Wheel when spin ends.
     const handleSpinEnd = (selectedWinner) => {
         setWinner(selectedWinner);
+        setWinnerKey((k) => k + 1);
         setSpinning(false);
         // Play clap sound.
         const audio = new Audio(CLAP_SOUND_URL);
@@ -28,51 +30,40 @@ const App = () => {
     };
 
     return (
-        <div
-            style={{
-                display: 'flex',
-                justifyContent: 'space-around',
-                padding: '20px',
-                fontFamily: 'Arial, sans-serif',
-            }}>
-            {/* Left Column: Wheel */}
-            <div style={{ flex: 1, display: 'flex', justifyContent: 'center' }}>
-                <Wheel names={names} onSpinEnd={handleSpinEnd} spinning={spinning} setSpinning={setSpinning} />
-            </div>
+        <div className="app-container">
+            <div className="app-layout">
+                <div className="left-col">
+                    <Wheel names={names} onSpinEnd={handleSpinEnd} spinning={spinning} setSpinning={setSpinning} />
+                </div>
 
-            {/* Right Column: Names Input, Winner, Timer */}
-            <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                <h1 style={{ marginBottom: '20px' }}>Spin the Recora Wheel</h1>
+                <div className="right-col">
+                    <h1 style={{ marginBottom: '18px' }}>Spin the Recora Wheel</h1>
 
-                {/* Name Input */}
-                <textarea
-                    value={namesInput}
-                    onChange={handleNamesChange}
-                    placeholder="Enter names, one per line..."
-                    style={{
-                        width: '300px',
-                        height: '100px',
-                        marginBottom: '20px',
-                        padding: '10px',
-                        border: '1px solid #ccc',
-                        borderRadius: '4px',
-                    }}
-                />
+                    <textarea
+                        className="names-textarea"
+                        value={namesInput}
+                        onChange={handleNamesChange}
+                        placeholder="Enter names, one per line..."
+                    />
 
-                {/* Winner Display - Bigger font */}
-                {winner && (
-                    <div>
-                        <h2 style={{ marginBottom: '20px', color: 'green', fontSize: '36px' }}>Your turn to score:</h2>
+                    {winner && (
+                        <div style={{ width: '100%', marginTop: '2px' }}>
+                            <h2 className="winner" style={{ fontSize: '24px' }}>
+                                Your turn to score:
+                            </h2>
+                            <h2
+                                style={{
+                                    textAlign: 'center',
+                                }}>
+                                <span key={winnerKey} className="winner-name">
+                                    {winner}
+                                </span>
+                            </h2>
+                        </div>
+                    )}
 
-                        <h2 style={{ textAlign: 'center', marginBottom: '20px', color: 'green', fontSize: '60px' }}>
-                            {' '}
-                            {winner}
-                        </h2>
-                    </div>
-                )}
-
-                {/* Timer */}
-                <Timer />
+                    <Timer />
+                </div>
             </div>
         </div>
     );

@@ -30,7 +30,55 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 40px 20px;
+    padding: 12px 16px; /* reduced top spacing */
+}
+
+.app-layout {
+    display: flex;
+    gap: 40px;
+    align-items: center; /* vertical center columns */
+    justify-content: center;
+    width: 100%;
+    max-width: 1140px;
+}
+
+.left-col {
+    flex: 0 0 600px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.right-col {
+    flex: 0 0 600px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.names-textarea {
+    width: 100%;
+    height: 120px;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #e6e9ef;
+    resize: vertical;
+}
+.winner {
+    color: var(--accent);
+    text-align: center;
+}
+
+@media (max-width: 980px) {
+    .app-layout {
+        flex-direction: column;
+        gap: 20px;
+    }
+    .left-col,
+    .right-col {
+        flex: 1 1 auto;
+        width: 100%;
+        max-width: 680px;
+    }
 }
 
 .card {
@@ -103,5 +151,55 @@ input[type='number'] {
     }
     .timer-display {
         font-size: 48px;
+    }
+}
+
+/* Winner name pop animation (compact) */
+.winner-name {
+    display: inline-block;
+    font-weight: 900;
+    font-size: 50px; /* compact but prominent */
+    color: #f59e0b; /* golden accent */
+    transform-origin: center;
+    /* pop then longer glow/pulse with subtle bounce */
+    animation:
+        winnerPop 700ms cubic-bezier(0.2, 1.1, 0.2, 1) both,
+        winnerGlow 1600ms ease 600ms 2 both;
+    text-transform: none;
+}
+
+@keyframes winnerPop {
+    0% {
+        opacity: 0;
+        transform: translateY(10px) scale(0.92);
+    }
+    50% {
+        opacity: 1;
+        transform: translateY(-10px) scale(1.08);
+    }
+    60% {
+        transform: translateY(-10px) scale(2); /* peak: 2x size */
+    }
+    80% {
+        transform: translateY(4px) scale(1.02);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes winnerGlow {
+    0% {
+        text-shadow: 0 0 0 rgba(245, 158, 11, 0);
+        transform: scale(1);
+    }
+    40% {
+        text-shadow: 0 10px 30px rgba(245, 158, 11, 0.22);
+        transform: scale(1.03);
+    }
+    100% {
+        text-shadow: 0 0 0 rgba(245, 158, 11, 0);
+        transform: scale(1);
     }
 }
