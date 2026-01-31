@@ -11,6 +11,7 @@ const App = () => {
     const [winner, setWinner] = useState(null);
     const [winnerKey, setWinnerKey] = useState(0);
     const [spinning, setSpinning] = useState(false);
+    const title = 'Spin the Recora Wheel';
 
     // Parse textarea input (one name per line).
     const handleNamesChange = (e) => {
@@ -37,7 +38,14 @@ const App = () => {
                 </div>
 
                 <div className="right-col">
-                    <h1 style={{ marginBottom: '18px' }}>Spin the Recora Wheel</h1>
+                    {/* Title extracted into a variable */}
+                    <h1 className="playful-heading" style={{ marginBottom: '12px' }}>
+                        {Array.from(title).map((ch, i) => (
+                            <span key={i} className="playful-letter" style={{ '--i': i }} aria-hidden={ch === ' '}>
+                                {ch}
+                            </span>
+                        ))}
+                    </h1>
 
                     <textarea
                         className="names-textarea"

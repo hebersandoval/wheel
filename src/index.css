@@ -154,6 +154,53 @@ input[type='number'] {
     }
 }
 
+.playful-heading {
+    /* Happy rounded fonts; falls back to system cursive */
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 800;
+    letter-spacing: 1px;
+    display: inline-block;
+    word-spacing: 0.8em; /* extra space between words */
+}
+.playful-letter {
+    display: inline-block;
+    will-change: transform, text-shadow;
+    --i: 0;
+}
+.playful-letter {
+    animation: letterBurst 5s cubic-bezier(0.2, 0.8, 0.2, 1) infinite;
+    animation-delay: calc(var(--i) * 0.09s);
+}
+
+@keyframes letterBurst {
+    0% {
+        transform: translateY(0) scale(1);
+        text-shadow: none;
+    }
+    6% {
+        transform: translateY(-18px) scale(1.8);
+        text-shadow: 0 18px 40px rgba(75, 110, 246, 0.18);
+    } /* pop up big */
+    12% {
+        transform: translateY(6px) scale(0.95);
+    }
+    18% {
+        transform: translateY(0) scale(1);
+    }
+    100% {
+        transform: translateY(0) scale(1);
+        text-shadow: none;
+    }
+}
+
+/* make spaces visible and not animated; add fixed width between words */
+.playful-letter[aria-hidden='true'] {
+    display: inline-block;
+    width: 0.8em;
+    animation: none;
+    pointer-events: none;
+}
+
 /* Winner name pop animation (compact) */
 .winner-name {
     display: inline-block;

@@ -28,7 +28,7 @@ const Timer = () => {
     };
 
     return (
-        <div className="card timer" style={{ marginTop: '24px' }}>
+        <div className="card timer" style={{ marginTop: '10px', marginBottom: '10px' }}>
             <h2 style={{ margin: '6px 0 8px', color: 'var(--muted)' }}>Countdown Timer</h2>
             <div className="timer-display">{formatTime()}</div>
 
